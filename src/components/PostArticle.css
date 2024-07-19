@@ -5,6 +5,13 @@
   height: 90vh;
 }
 
+@media screen and (max-width: 767px) {
+  .postBlock {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
 .postContainer {
   background-color: #fff;
   border-radius: 10px;
@@ -13,13 +20,35 @@
   justify-content: center;
   width: 500px;
   height: 400px;
-  padding: 0 40px;
+  padding: 30px 40px;
   box-shadow: 5px 8px 15px -5px #999;
   gap: 10px;
 }
 
+@media screen and (max-width: 767px) {
+  .postContainer {
+    height: 380px;
+    padding: 0 30px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .postContainer {
+    height: 360px;
+    padding: 0 20px;
+  }
+}
+
 .postHead {
   margin: 0 0 10px;
+  font-size: 30px;
+}
+
+@media screen and (max-width: 767px) {
+  .postHead {
+    margin: 0 0 5px;
+    font-size: 26px;
+  }
 }
 
 .postHeading {
@@ -51,6 +80,7 @@
   padding: 5px;
   background-color: #5fc8e6;
   color: #fff;
+  font-size: 16px;
   font-weight: bold;
   outline: none;
   border: none;
