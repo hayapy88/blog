@@ -6,9 +6,10 @@ import {
   faHouse,
   faFilePen,
   faRightToBracket,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Navbar = () => {
+const Navbar = ({ isAuth }) => {
   return (
     <nav>
       <Link to="/">
@@ -19,10 +20,18 @@ const Navbar = () => {
         <FontAwesomeIcon icon={faFilePen} />
         &nbsp;Post Article
       </Link>
-      <Link to="/login">
-        <FontAwesomeIcon icon={faRightToBracket} />
-        &nbsp;Login
-      </Link>
+      {!isAuth ? (
+        <Link to="/login">
+          <FontAwesomeIcon icon={faRightToBracket} />
+          &nbsp;Login
+        </Link>
+      ) : (
+        <Link to="/logout">
+          <FontAwesomeIcon icon={faRightFromBracket} />
+          &nbsp;Logout
+        </Link>
+      )}
+      ;
     </nav>
   );
 };
