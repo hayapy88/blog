@@ -1,0 +1,36 @@
+@import url("./PostArticle.css");
+
+.postContainer.postContainer--home {
+  min-height: auto;
+  height: auto;
+  padding: 30px;
+}
+
+@media screen and (max-width: 420px) {
+  .postContainer.postContainer--home {
+    padding: 20px;
+  }
+}
+
+.postHeading.postHeading--title {
+  font-size: 30px;
+}
+
+@media screen and (max-width: 767px) {
+  .postHeading.postHeading--title {
+    font-size: 26px;
+  }
+}
+
+.postHeading.postHeading--author {
+  font-weight: bold;
+}
+
+.postContainer button.deleteButton {
+  width: 80px;
+  margin: 7px 0;
+  background-color: #888;
+}
+.postContainer button.deleteButton:hover {
+  background-color: #555;
+}
