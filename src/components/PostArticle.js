@@ -49,7 +49,7 @@ const PostArticle = () => {
   }, []);
 
   return (
-    <div className="postBlock">
+    <div className="postArticlePage postBlock">
       <div className="postContainer">
         <h1 className="postHead">Post an article</h1>
         <div className="postPart">

@@ -6,7 +6,7 @@ const Home = () => {
     console.log("Clicked Delete button");
   };
   return (
-    <div className="postBlock">
+    <div className="homePage postBlock">
       <div className="postContainer postContainer--home">
         <div className="postPart">
           <h2 className="postHeading postHeading--title">
@@ -19,10 +19,8 @@ const Home = () => {
             texts. This is a content texts. This is a content texts.
           </p>
         </div>
-        <div className="postPart">
+        <div className="postPart postPart--authorAndDelete">
           <p className="postHeading postHeading--author">@Author name</p>
-        </div>
-        <div className="postPart">
           <button className="deleteButton" onClick={deletePostData}>
             Delete
           </button>
