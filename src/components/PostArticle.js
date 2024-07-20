@@ -1,12 +1,28 @@
 import React, { useEffect, useState } from "react";
 import "./PostArticle.css";
+import { addDoc, collection } from "firebase/firestore";
+import { auth, db } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const PostArticle = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const sendPostData = () => {
-    console.log(title);
-    console.log(content);
+  const navigate = useNavigate();
+  const sendPostData = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        title: title,
+        content: content,
+        author: {
+          username: auth.currentUser.displayName,
+          id: auth.currentUser.uid,
+        },
+      });
+      console.log("Document written with ID: ", docRef.id);
+      navigate("/");
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
   useEffect(() => {

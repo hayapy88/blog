@@ -31,7 +31,6 @@ const Navbar = ({ isAuth }) => {
           &nbsp;Logout
         </Link>
       )}
-      ;
     </nav>
   );
 };
