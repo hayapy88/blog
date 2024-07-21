@@ -9,6 +9,9 @@ const PostArticle = ({ isAuth }) => {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const sendPostData = async () => {
+    if (!auth.currentUser) {
+      console.log("User is not authenticated.");
+    }
     try {
       const docRef = await addDoc(collection(db, "posts"), {
         title: title,
