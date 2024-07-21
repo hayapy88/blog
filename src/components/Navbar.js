@@ -11,27 +11,31 @@ import {
 
 const Navbar = ({ isAuth }) => {
   return (
-    <nav>
-      <Link to="/">
-        <FontAwesomeIcon icon={faHouse} />
-        &nbsp;Home
-      </Link>
-      <Link to="/postArticle">
-        <FontAwesomeIcon icon={faFilePen} />
-        &nbsp;Post Article
-      </Link>
-      {!isAuth ? (
-        <Link to="/login">
-          <FontAwesomeIcon icon={faRightToBracket} />
-          &nbsp;Login
+    <>
+      <nav>
+        <Link to="/">
+          <FontAwesomeIcon icon={faHouse} />
+          &nbsp;Home
         </Link>
-      ) : (
-        <Link to="/logout">
-          <FontAwesomeIcon icon={faRightFromBracket} />
-          &nbsp;Logout
-        </Link>
-      )}
-    </nav>
+        {!isAuth ? (
+          <Link to="/login">
+            <FontAwesomeIcon icon={faRightToBracket} />
+            &nbsp;Login
+          </Link>
+        ) : (
+          <>
+            <Link to="/postArticle">
+              <FontAwesomeIcon icon={faFilePen} />
+              &nbsp;Post Article
+            </Link>
+            <Link to="/logout">
+              <FontAwesomeIcon icon={faRightFromBracket} />
+              &nbsp;Logout
+            </Link>
+          </>
+        )}
+      </nav>
+    </>
   );
 };
 
