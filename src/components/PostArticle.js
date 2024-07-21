@@ -4,7 +4,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
-const PostArticle = () => {
+const PostArticle = ({ isAuth }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
@@ -26,6 +26,10 @@ const PostArticle = () => {
   };
 
   useEffect(() => {
+    console.log("isAuth in PostArticle: " + isAuth);
+    if (!isAuth) {
+      navigate("/");
+    }
     const postTitleEl = document.getElementById("postTitle");
     const postContentEl = document.getElementById("postContent");
 
@@ -46,7 +50,7 @@ const PostArticle = () => {
 
       postContentEl.removeEventListener("change", handleContentChange);
     };
-  }, []);
+  }, [isAuth]);
 
   return (
     <div className="postArticlePage postBlock">

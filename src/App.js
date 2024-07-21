@@ -5,16 +5,24 @@ import PostArticle from "./components/PostArticle";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Navbar from "./components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
+  useEffect(() => {
+    const authLocalStorage = localStorage.getItem("isAuth") ? true : false;
+    console.log("authLocalStorage: " + authLocalStorage);
+    setIsAuth(authLocalStorage);
+  }, []);
   return (
     <Router>
       <Navbar isAuth={isAuth} />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/postArticle" element={<PostArticle />}></Route>
+        <Route
+          path="/postArticle"
+          element={<PostArticle isAuth={isAuth} />}
+        ></Route>
         <Route path="/login" element={<Login setIsAuth={setIsAuth} />}></Route>
         <Route
           path="/logout"
