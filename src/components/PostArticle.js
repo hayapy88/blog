@@ -50,7 +50,7 @@ const PostArticle = ({ isAuth }) => {
 
       postContentEl.removeEventListener("change", handleContentChange);
     };
-  }, [isAuth]);
+  }, [isAuth, navigate]);
 
   return (
     <div className="postArticlePage postBlock">
