@@ -11,6 +11,7 @@ const PostArticle = ({ isAuth }) => {
   const sendPostData = async () => {
     if (!auth.currentUser) {
       console.log("User is not authenticated.");
+      return;
     }
     try {
       const docRef = await addDoc(collection(db, "posts"), {
