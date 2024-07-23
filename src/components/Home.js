@@ -16,7 +16,10 @@ const Home = () => {
         <div className="postPart">
           <p className="postHeading">
             This is a content texts. This is a content texts. This is a content
-            texts. This is a content texts. This is a content texts.
+            texts. This is a content texts. This is a content texts. This is a
+            content texts. This is a content texts. This is a content texts.
+            This is a content texts. This is a content texts. This is a content
+            texts.
           </p>
         </div>
         <div className="postPart postPart--authorAndDelete">
