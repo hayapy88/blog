@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./PostArticle.css";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import "./Common.css";
+import "./PostArticle.css";
 
 const PostArticle = ({ isAuth }) => {
   const [title, setTitle] = useState("");

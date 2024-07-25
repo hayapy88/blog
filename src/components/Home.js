@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./Home.css";
 import { auth, db } from "../firebase";
 import {
   collection,
@@ -11,6 +10,8 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
+import "./Common.css";
+import "./Home.css";
 
 const Home = () => {
   const [postList, setPostList] = useState([]);
@@ -72,7 +73,6 @@ const Home = () => {
               <p className="postContent postHeading">{post.content}</p>
             </div>
             {/* <p>{currentUser.uid}</p> */}
-            <p>{post.author.id}</p>
             <p>
               {post.createTime
                 ? post.createTime.toDate().toString()
