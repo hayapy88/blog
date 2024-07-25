@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 
 const Home = () => {
   const [postList, setPostList] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      setCurrentUser(currentUser);
+    }
     const getPosts = async () => {
       const data = await getDocs(collection(db, "posts"));
       // console.log(data);
@@ -38,12 +43,14 @@ const Home = () => {
               <p className="postAuthor postHeading postHeading--author">
                 @{post.author.username}
               </p>
-              <button
-                className="deleteButton"
-                onClick={() => handleDeletePost(post.id)}
-              >
-                Delete
-              </button>
+              {currentUser && currentUser.uid === post.author.id && (
+                <button
+                  className="deleteButton"
+                  onClick={() => handleDeletePost(post.id)}
+                >
+                  Delete
+                </button>
+              )}
             </div>
           </div>
         );
