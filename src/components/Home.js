@@ -1,27 +1,59 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { auth, db } from "../firebase";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 
 const Home = () => {
   const [postList, setPostList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      setCurrentUser(currentUser);
-    }
-    const getPosts = async () => {
-      const data = await getDocs(collection(db, "posts"));
-      // console.log(data);
-      // console.log(data.docs);
-      // console.log(data.docs.map((doc) => ({ doc })));
-      // console.log(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+      if (user) {
+        console.log("currentUser: ", currentUser);
+      }
+    });
+    return () => unsubscribe();
+  }, [currentUser]);
+  useEffect(() => {
+    const getPostsAndUpdate = async () => {
+      const postsCollection = collection(db, "posts");
+      const postsQuery = query(postsCollection, orderBy("createTime", "desc"));
+      const querySnapshot = await getDocs(postsQuery);
+      // console.log(querySnapshot);
+      // console.log(querySnapshot.docs);
+      // console.log(querySnapshot.docs.map((doc) => ({ doc })));
 
-      setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const docs = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      console.log(docs);
+
+      const updates = docs.map(async (document) => {
+        if (!document.createTime) {
+          const docRef = doc(db, "posts", document.id);
+          await updateDoc(docRef, {
+            createTime: serverTimestamp(),
+          });
+        }
+      });
+      await Promise.all(updates);
+
+      setPostList(docs);
     };
-    getPosts();
-  }, []);
+    getPostsAndUpdate();
+  }, [currentUser]);
   const handleDeletePost = async (id) => {
     await deleteDoc(doc(db, "posts", id));
     setPostList(postList.filter((post) => post.id !== id));
@@ -39,6 +71,13 @@ const Home = () => {
             <div className="postPart">
               <p className="postContent postHeading">{post.content}</p>
             </div>
+            {/* <p>{currentUser.uid}</p> */}
+            <p>{post.author.id}</p>
+            <p>
+              {post.createTime
+                ? post.createTime.toDate().toString()
+                : "Updating..."}
+            </p>
             <div className="postPart postPart--authorAndDelete">
               <p className="postAuthor postHeading postHeading--author">
                 @{post.author.username}

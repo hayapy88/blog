@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./PostArticle.css";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +21,7 @@ const PostArticle = ({ isAuth }) => {
           username: auth.currentUser.displayName,
           id: auth.currentUser.uid,
         },
+        createTime: serverTimestamp(),
       });
       console.log("Document written with ID: ", docRef.id);
       navigate("/");
