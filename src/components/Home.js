@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 
 const Home = () => {
   const [postList, setPostList] = useState([]);
@@ -17,8 +17,9 @@ const Home = () => {
     };
     getPosts();
   }, []);
-  const deletePostData = () => {
-    console.log("Clicked Delete button");
+  const handleDeletePost = async (id) => {
+    await deleteDoc(doc(db, "posts", id));
+    setPostList(postList.filter((post) => post.id !== id));
   };
   return (
     <div className="homePage postBlock">
@@ -37,7 +38,10 @@ const Home = () => {
               <p className="postAuthor postHeading postHeading--author">
                 @{post.author.username}
               </p>
-              <button className="deleteButton" onClick={deletePostData}>
+              <button
+                className="deleteButton"
+                onClick={() => handleDeletePost(post.id)}
+              >
                 Delete
               </button>
             </div>
