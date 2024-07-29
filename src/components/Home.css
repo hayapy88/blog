@@ -30,6 +30,11 @@
   font-weight: bold;
 }
 
+.homePage .postHeading--createTime {
+  font-size: 15px;
+  font-weight: normal;
+}
+
 .homePage .postContainer button.deleteButton {
   width: 80px;
   margin: 7px 0;

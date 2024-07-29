@@ -20,7 +20,11 @@ const formatTimestamp = (timestamp) => {
 };
 
 const PostDate = ({ timestamp }) => {
-  return <p>{formatTimestamp(timestamp)}</p>;
+  return (
+    <p className="postCreateTime postHeading postHeading--createTime">
+      {formatTimestamp(timestamp)}
+    </p>
+  );
 };
 
 const Home = () => {
