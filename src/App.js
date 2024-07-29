@@ -17,7 +17,7 @@ function App() {
     setIsAuth(authLocalStorage);
   }, []);
   return (
-    <Router>
+    <Router basename="/blog">
       <Navbar isAuth={isAuth} />
       <Routes>
         <Route path="/" element={<Home isAuth={isAuth} />}></Route>
