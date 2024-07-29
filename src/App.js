@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import PostArticle from "./components/PostArticle";
 import Login from "./components/Login";
@@ -20,7 +20,7 @@ function App() {
     <Router>
       <Navbar isAuth={isAuth} />
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/" element={<Home isAuth={isAuth} />}></Route>
         <Route
           path="/postArticle"
           element={<PostArticle isAuth={isAuth} />}

@@ -13,6 +13,7 @@ import {
 import { format } from "date-fns";
 import "./Common.css";
 import "./Home.css";
+import { Link } from "react-router-dom";
 
 const formatTimestamp = (timestamp) => {
   const date = timestamp.toDate();
@@ -27,7 +28,8 @@ const PostDate = ({ timestamp }) => {
   );
 };
 
-const Home = () => {
+const Home = ({ isAuth }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [postList, setPostList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
@@ -67,6 +69,7 @@ const Home = () => {
       await Promise.all(updates);
 
       setPostList(docs);
+      setIsLoading(false);
     };
     getPostsAndUpdate();
   }, [currentUser]);
@@ -76,34 +79,47 @@ const Home = () => {
   };
   return (
     <div className="homePage postBlock">
-      {postList.map((post) => {
-        return (
-          <div className="postContainer postContainer--home" key={post.id}>
-            <div className="postPart">
-              <h2 className="postTitle postHeading postHeading--title">
-                {post.title}
-              </h2>
+      <h1>Short Blog</h1>
+      {!isAuth ? (
+        <p>
+          Once you <Link to="/login">log in</Link> with your Google account, you
+          can post!!
+        </p>
+      ) : (
+        ""
+      )}
+      {isLoading ? (
+        <p>Loading articles...</p>
+      ) : (
+        postList.map((post) => {
+          return (
+            <div className="postContainer postContainer--home" key={post.id}>
+              <div className="postPart">
+                <h2 className="postTitle postHeading postHeading--title">
+                  {post.title}
+                </h2>
+              </div>
+              <div className="postPart">
+                <p className="postContent postHeading">{post.content}</p>
+              </div>
+              <PostDate timestamp={post.createTime} />
+              <div className="postPart postPart--authorAndDelete">
+                <p className="postAuthor postHeading postHeading--author">
+                  @{post.author.username}
+                </p>
+                {currentUser && currentUser.uid === post.author.id && (
+                  <button
+                    className="deleteButton"
+                    onClick={() => handleDeletePost(post.id)}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="postPart">
-              <p className="postContent postHeading">{post.content}</p>
-            </div>
-            <PostDate timestamp={post.createTime} />
-            <div className="postPart postPart--authorAndDelete">
-              <p className="postAuthor postHeading postHeading--author">
-                @{post.author.username}
-              </p>
-              {currentUser && currentUser.uid === post.author.id && (
-                <button
-                  className="deleteButton"
-                  onClick={() => handleDeletePost(post.id)}
-                >
-                  Delete
-                </button>
-              )}
-            </div>
-          </div>
-        );
-      })}
+          );
+        })
+      )}
     </div>
   );
 };
