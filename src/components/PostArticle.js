@@ -1,35 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import "./Common.css";
 import "./PostArticle.css";
 
 const PostArticle = ({ isAuth }) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const sendPostData = async () => {
-    if (!auth.currentUser) {
-      console.log("User is not authenticated.");
-      return;
-    }
-    try {
-      const docRef = await addDoc(collection(db, "posts"), {
-        title: title,
-        content: content,
-        author: {
-          username: auth.currentUser.displayName,
-          id: auth.currentUser.uid,
-        },
-        createTime: serverTimestamp(),
-      });
-      console.log("Document written with ID: ", docRef.id);
-      navigate("/");
-    } catch (error) {
-      console.error("Error adding document: ", error);
-    }
-  };
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      content: "",
+    },
+    validationSchema: Yup.object({
+      title: Yup.string()
+        .required("Title is required")
+        .max(50, "Must be 50 characters or less"),
+      content: Yup.string()
+        .required("Content is required")
+        .max(1000, "Must be 1000 characters or less"),
+    }),
+    onSubmit: async (value) => {
+      if (!auth.currentUser) {
+        console.log("User is not authenticated.");
+        return;
+      }
+      try {
+        const docRef = await addDoc(collection(db, "posts"), {
+          title: value.title,
+          content: value.content,
+          author: {
+            username: auth.currentUser.displayName,
+            id: auth.currentUser.uid,
+          },
+          createTime: serverTimestamp(),
+        });
+        console.log("Document written with ID: ", docRef.id);
+        navigate("/");
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
+    },
+  });
 
   useEffect(() => {
     console.log("isAuth in PostArticle: " + isAuth);
@@ -60,33 +75,45 @@ const PostArticle = ({ isAuth }) => {
 
   return (
     <div className="postArticlePage postBlock">
-      <div className="postContainer">
-        <h1 className="postHead">Post an article</h1>
-        <div className="postPart">
-          <h2 className="postHeading">Title</h2>
-          <input
-            id="postTitle"
-            className="postTitle"
-            type="text"
-            placeholder="Enter an title"
-            onChange={(e) => setTitle(e.target.value)}
-          />
+      <form onSubmit={formik.handleSubmit}>
+        <div className="postContainer">
+          <h1 className="postHead">Post an article</h1>
+          <div className="postPart">
+            <h2 className="postHeading">Title</h2>
+            <input
+              id="postTitle"
+              className="postTitle"
+              type="text"
+              placeholder="Enter a title"
+              {...formik.getFieldProps("title")}
+            />
+            {formik.touched.title && formik.errors.title ? (
+              <div className="errorMessage">{formik.errors.title}</div>
+            ) : null}
+          </div>
+          <div className="postPart postPart--content">
+            <p className="postHeading">Content</p>
+            <textarea
+              id="postContent"
+              className="postContent"
+              cols="30"
+              rows="10"
+              placeholder="Enter texts"
+              {...formik.getFieldProps("content")}
+            ></textarea>
+            {formik.touched.content && formik.errors.content ? (
+              <div className="errorMessage">{formik.errors.content}</div>
+            ) : null}
+          </div>
+          <button
+            className="postButton"
+            type="submit"
+            disabled={formik.isSubmitting}
+          >
+            Post
+          </button>
         </div>
-        <div className="postPart">
-          <p className="postHeading">Content</p>
-          <textarea
-            id="postContent"
-            className="postContent"
-            cols="30"
-            rows="10"
-            placeholder="Enter texts"
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
-        </div>
-        <button className="postButton" onClick={sendPostData}>
-          Post
-        </button>
-      </div>
+      </form>
     </div>
   );
 };

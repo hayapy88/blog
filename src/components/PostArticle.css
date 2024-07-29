@@ -78,4 +78,14 @@
 
 .postButton {
   width: 100%;
+  margin: 5px 0;
+}
+
+.errorMessage {
+  color: #cc0000;
+}
+
+.postPart--content {
+  display: flex;
+  flex-direction: column;
 }
