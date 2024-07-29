@@ -10,6 +10,7 @@ const Logout = ({ setIsAuth }) => {
     signOut(auth).then(() => {
       localStorage.clear();
       setIsAuth(false);
+      alert("You have been successfully logged out!");
       navigate("/login");
     });
   };
