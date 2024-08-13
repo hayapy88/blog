@@ -75,7 +75,7 @@ const PostArticle = ({ isAuth }) => {
 
   return (
     <div className="postArticlePage postBlock">
-      <form onSubmit={formik.handleSubmit}>
+      <form className="postForm" onSubmit={formik.handleSubmit}>
         <div className="postContainer">
           <h1 className="postHead">Post an article</h1>
           <div className="postPart">

@@ -14,6 +14,12 @@
   }
 }
 
+@media screen and (max-width: 767px) {
+  .postForm {
+    width: 100%;
+  }
+}
+
 .postContainer {
   background-color: #fff;
   border-radius: 10px;
@@ -30,6 +36,7 @@
 
 @media screen and (max-width: 767px) {
   .postContainer {
+    width: 100%;
     min-height: 380px;
     padding: 20px 30px;
   }
